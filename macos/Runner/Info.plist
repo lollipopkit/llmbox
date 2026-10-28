@@ -38,6 +38,8 @@
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>lollipopkit.com</string>
+					<!-- Sign-in redirect, `Lkc.redirectUrl`. -->
+					<string>llmbox</string>
 				</array>
 			</dict>
 		</array>
