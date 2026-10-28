@@ -1,6 +1,7 @@
 
 import 'package:fl_lib/fl_lib.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:llmbox/core/lkc.dart';
 import 'package:llmbox/core/util/update.dart';
 import 'package:llmbox/data/res/build_data.dart';
 import 'package:llmbox/data/res/github_id.dart';
@@ -141,13 +142,24 @@ class SettingsPage extends StatelessWidget {
         children: [
           SettingsGroup(
             rows: [
-              for (final t in SettingsTab.values)
-                SettingsRow(
-                  icon: t.icon,
-                  title: t.i18n,
+              ListenableBuilder(
+                listenable: Listenable.merge([Lkc.client.user, Lkc.client.entitlements]),
+                builder: (_, _) => SettingsRow(
+                  leading: LkcAvatar(client: Lkc.client),
+                  title: SettingsTab.account.i18n,
+                  subtitle: lkcAccountSummary(Lkc.client),
                   trailing: const RowChevron(),
-                  onTap: () => SettingsTabPage.route.go(context, args: t),
+                  onTap: () => SettingsTabPage.route.go(context, args: SettingsTab.account),
                 ),
+              ),
+              for (final t in SettingsTab.values)
+                if (t != SettingsTab.account)
+                  SettingsRow(
+                    icon: t.icon,
+                    title: t.i18n,
+                    trailing: const RowChevron(),
+                    onTap: () => SettingsTabPage.route.go(context, args: t),
+                  ),
             ],
           ),
         ],
