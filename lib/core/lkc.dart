@@ -1,6 +1,6 @@
 import 'package:fl_lib/fl_lib.dart';
 
-/// This app's LKC Cloud client: the `llmbox` public client at the IdP.
+/// This app's LK Cloud client: the `llmbox` public client at the IdP.
 abstract final class Lkc {
   /// Registered with the IdP; AppAuth's Android receiver takes it too
   /// (`appAuthRedirectScheme` in `android/app/build.gradle`).
@@ -14,7 +14,7 @@ abstract final class Lkc {
     try {
       await client.init();
     } catch (e, s) {
-      Loggers.app.warning('LKC Cloud init', e, s);
+      Loggers.app.warning('LK Cloud init', e, s);
     }
   }
 }
