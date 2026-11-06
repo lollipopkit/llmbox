@@ -16,13 +16,17 @@ for apk in "$@"; do
   unzip -q "$apk" 'lib/*' -d "$dir"
   while IFS= read -r -d '' so; do
     checked=$((checked + 1))
+    name="$(basename "$apk"): ${so#"$dir/"}"
+    headers="$("$READELF" -lW "$so")" || { echo "::error::$name: llvm-readelf failed"; exit 1; }
+    aligns="$(awk '$1 == "LOAD" { print $NF }' <<<"$headers")"
+    [ -n "$aligns" ] || { echo "::error::$name: no LOAD segment"; exit 1; }
     while read -r align; do
       if (( align < 0x4000 )); then
-        echo "::error::$(basename "$apk"): ${so#"$dir/"} has LOAD align $align"
+        echo "::error::$name has LOAD align $align"
         bad=1
         break
       fi
-    done < <("$READELF" -lW "$so" | awk '$1 == "LOAD" { print $NF }')
+    done <<<"$aligns"
   done < <(find "$dir/lib" -name '*.so' -print0)
 done
 
