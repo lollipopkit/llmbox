@@ -32,10 +32,7 @@ set(CMAKE_CXX_FLAGS_PROFILE "${CMAKE_CXX_FLAGS_RELEASE}")
 # Use Unicode for all projects.
 add_definitions(-DUNICODE -D_UNICODE)
 
-# MSVC 14.51 (VS 18.6) turns /await + <experimental/coroutine> — still used by
-# plugins such as local_auth_windows — into STL1011 hard errors. Silence the
-# deprecation until those plugins migrate to C++20 <coroutine>; applies to the
-# plugins below because it precedes their add_subdirectory() calls.
+# TODO: remove once local_auth_windows drops /await (STL1011 on MSVC 14.51+).
 add_compile_definitions(_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
 
 # Compilation settings that should be applied to most targets.
