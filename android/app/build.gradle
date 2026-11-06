@@ -12,6 +12,8 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+def pinnedNdkVersion = rootProject.file('ndk-version.txt').text.trim()
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -31,7 +33,8 @@ if (flutterVersionName == null) {
 android {
     namespace "com.lollipopkit.llmbox"
     compileSdk 36
-    ndkVersion "28.2.13676358"
+    // Also the NDK CI hands the native-asset hooks (ANDROID_NDK_HOME).
+    ndkVersion pinnedNdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
