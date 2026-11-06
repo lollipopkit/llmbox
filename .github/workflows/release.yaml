@@ -44,6 +44,13 @@ jobs:
           curl -fsS -u "$BASIC_AUTH" -o android/key.properties "${URL_PREFIX}key.properties"
       - name: Build
         run: dart run fl_build -p android
+      - name: Check 16 KB page alignment
+        env:
+          READELF: ${{ env.ANDROID_NDK_HOME }}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf
+        run: >-
+          bash scripts/release/check-android-page-align.sh
+          build/app/outputs/flutter-apk/${{ env.APP_NAME }}_${{ env.BUILD_NUMBER }}_arm64.apk
+          build/app/outputs/flutter-apk/${{ env.APP_NAME }}_${{ env.BUILD_NUMBER }}_amd64.apk
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
