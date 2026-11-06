@@ -24,6 +24,15 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+      # The native-asset hooks link with ANDROID_NDK_HOME, not Gradle's
+      # ndkVersion: the runner's default NDK predates r28 and links the Rust
+      # libraries for 4 KB pages, which a 16 KB-page device refuses to load.
+      - name: Install the pinned NDK
+        run: |
+          set -euo pipefail
+          ndk_version="$(tr -d '[:space:]' < android/ndk-version.txt)"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$ndk_version" >/dev/null
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$ndk_version" >> "$GITHUB_ENV"
       - name: Fetch secrets
         # Through env, not interpolated into the script; -f fails on an HTTP error
         # instead of saving the error page as the key.
