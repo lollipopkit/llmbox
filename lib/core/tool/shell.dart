@@ -13,8 +13,8 @@ import 'package:material_ui/material_ui.dart';
 ///
 /// Every call is asked about, and no answer covers the next: the same tool
 /// lists a directory and deletes one, and on a computer it runs beside this
-/// app's data and the user's files. [CommandRisk] tells the user which kind
-/// of call it is; it never decides for them.
+/// app's data and the user's files. [LlmPermissionRules.classify] tells the user
+/// which kind of call it is; it never decides for them.
 final class TfShell extends ToolFunc {
   const TfShell()
     : super(
@@ -95,7 +95,7 @@ The user approves each command before it runs. No prompts or terminal UIs: pass 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        CommandRiskBadge(CommandRisk.classify(command)),
+        CommandRiskBadge(LlmPermissionRules.classify(command)),
         if (description.isNotEmpty) Text(description, style: UIs.text13Grey),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 9),

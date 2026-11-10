@@ -23,7 +23,7 @@ dependencies:
   # Direct, though `SqliteStore` lives in fl_lib: `hooks.user_defines` below is
   # only honoured for this package's own dependencies.
   sqlite3: ^3.6.0
-  webdav_client_plus: ^2.0.0
+  webdav_client_plus: ^3.0.0
   # A submodule, like fl_lib: developed alongside. Its ui package has the
   # chats, tools and provider settings, shared with Server Box.
   fl_pi_llm:
