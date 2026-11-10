@@ -129,6 +129,24 @@ void main() {
     expect(SyncRecorder.stampsOf([(LogSyncs.chatEntries, op(0).id), (LogSyncs.chatEntries, op(1).id)]), hasLength(2));
   });
 
+  test('entries that come before their chat wait for it', () async {
+    final chat = Chats.create();
+    await Chats.send(chat, 'early');
+    final uids = await Chats.entryUids(chat);
+    final entries = await Chats.entries(chat, [for (final e in uids) e.uid]);
+    final meta = LlmStores.chat.fetch(chat)!;
+    await Chats.close(chat);
+    await Llm.rt.deleteSession(chat);
+    await device();
+    SyncOp op(int i) => (c: LogSyncs.chatEntries, id: '$chat/${entries[i]['uid']}', h: syncStampOf(ms: BigInt.from(1000 + i), device: BigInt.from(7)), d: entries[i]);
+    await SyncRecords.apply([op(0), op(1)]);
+    expect(LlmStores.chat.fetch(chat), isNull);
+    // The chat comes later; the next read takes what waited.
+    LlmStores.chat.put(meta);
+    await SyncRecords.afterRead!((_) => true);
+    expect(await Chats.entryUids(chat), hasLength(2));
+  });
+
   test('a device that does not sync chats neither takes nor sends them', () async {
     final folder = _Folder();
     final chat = Chats.create();

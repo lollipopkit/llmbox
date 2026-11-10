@@ -253,7 +253,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Activez iCloud ou WebDAV ci-dessous pour synchroniser automatiquement.';
+      'Activez LK Cloud, iCloud ou WebDAV ci-dessous pour synchroniser automatiquement.';
 
   @override
   String get backupPassword => 'Mot de passe de sauvegarde';

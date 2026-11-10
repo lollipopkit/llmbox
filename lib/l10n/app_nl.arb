@@ -63,7 +63,7 @@
   "syncing": "Synchroniseren…",
   "neverSynced": "Nog niet gesynchroniseerd",
   "lastSyncFmt": "Laatst gesynchroniseerd: {time}",
-  "syncOffTip": "Zet hieronder iCloud of WebDAV aan om automatisch te synchroniseren.",
+  "syncOffTip": "Zet hieronder LK Cloud, iCloud of WebDAV aan om automatisch te synchroniseren.",
   "backupPassword": "Back-upwachtwoord",
   "backupEncrypted": "Back-ups worden hiermee versleuteld",
   "backupNotEncrypted": "Niet ingesteld: bestandsback-ups zijn onversleuteld en synchronisatie vereist er een",

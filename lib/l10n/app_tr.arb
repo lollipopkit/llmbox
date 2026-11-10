@@ -63,7 +63,7 @@
   "syncing": "Senkronize ediliyor…",
   "neverSynced": "Henüz senkronize edilmedi",
   "lastSyncFmt": "Son senkronizasyon: {time}",
-  "syncOffTip": "Otomatik senkronizasyon için aşağıda iCloud veya WebDAV'ı açın.",
+  "syncOffTip": "Otomatik senkronizasyon için aşağıda LK Cloud, iCloud veya WebDAV'ı açın.",
   "backupPassword": "Yedek parolası",
   "backupEncrypted": "Yedekler bununla şifrelenir",
   "backupNotEncrypted": "Ayarlanmadı: dosya yedekleri şifresizdir ve senkronizasyon için gereklidir",

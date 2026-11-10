@@ -246,7 +246,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Zet hieronder iCloud of WebDAV aan om automatisch te synchroniseren.';
+      'Zet hieronder LK Cloud, iCloud of WebDAV aan om automatisch te synchroniseren.';
 
   @override
   String get backupPassword => 'Back-upwachtwoord';

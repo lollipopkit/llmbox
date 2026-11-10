@@ -290,13 +290,19 @@ final class Backup implements Mergeable {
           final value = data[key];
           if (!take || value == null) continue;
           store.set(key, value, updateLastUpdateTsOnSet: false);
-          if (b > 0) unawaited(store.updateLastUpdateTs(ts: b, key: key));
+          // Restored by hand: an edit made here now, as its log stamp says.
+          if (force) {
+            unawaited(store.updateLastUpdateTs(key: key));
+          } else if (b > 0) {
+            unawaited(store.updateLastUpdateTs(ts: b, key: key));
+          }
           _record(store, key, b, force: force);
-        } else if (inCur && bakTs.containsKey(key) && b > c) {
-          // Deleted there after it was last written here.
-          store.remove(key, updateLastUpdateTsOnRemove: false);
+        } else if (bakTs.containsKey(key) && b > c) {
+          // Deleted there after it was last written here; not here either:
+          // the deletion kept, so an older value does not come back.
+          if (inCur) store.remove(key, updateLastUpdateTsOnRemove: false);
           unawaited(store.updateLastUpdateTs(ts: b, key: key));
-          _record(store, key, b, force: force);
+          _record(store, key, b, force: false);
         }
       }
     });

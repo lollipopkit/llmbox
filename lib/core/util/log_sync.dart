@@ -93,9 +93,20 @@ abstract final class LogSyncs {
     } catch (e, s) {
       Loggers.app.warning('Log sync: recording what is here', e, s);
     }
-    lkc.init();
-    LkcSyncWatch.of(lkc, onRemoteChange: () {}, inBackground: isDesktop).start();
-    files.init();
+    // Each on its own: one failing leaves the other running.
+    for (final (what, run) in [
+      ('LK Cloud', () {
+        lkc.init();
+        LkcSyncWatch.of(lkc, onRemoteChange: () {}, inBackground: isDesktop).start();
+      }),
+      ('files', files.init),
+    ]) {
+      try {
+        run();
+      } catch (e, s) {
+        Loggers.app.warning('Log sync: starting $what', e, s);
+      }
+    }
   }
 
   /// Whether what was here before the log is recorded. Device local.
@@ -124,8 +135,8 @@ abstract final class LogSyncs {
       final at = '${s.modifiedAt.millisecondsSinceEpoch}';
       if (_state(_seenKey(s.id)) == at) continue;
       if (LlmStores.chat.fetch(s.id) == null) continue;
-      await _recordEntries(s.id);
-      _setState(_seenKey(s.id), at);
+      // Looked at again next time when it could not be read now.
+      if (await _recordEntries(s.id)) _setState(_seenKey(s.id), at);
     }
   }
 
@@ -145,23 +156,24 @@ abstract final class LogSyncs {
 
   /// [_recordEntries], awaited by a test.
   @visibleForTesting
-  static Future<void> recordEntries(String chat) => _recordEntries(chat);
+  static Future<bool> recordEntries(String chat) => _recordEntries(chat);
 
   /// Records the entries of [chat] made since the last call: each a record of
   /// its own, unless it came from another device (recorded with its stamp
   /// when it was written). [at] for what was here before the log: one
-  /// millisecond apart, the oldest first, so they keep their order.
-  static Future<void> _recordEntries(String chat, {int? at}) async {
-    if (!_installed || !SqliteDb.isOpen) return;
+  /// millisecond apart, the oldest first, so they keep their order. Whether
+  /// the chat could be read.
+  static Future<bool> _recordEntries(String chat, {int? at}) async {
+    if (!_installed || !SqliteDb.isOpen) return false;
     final cursor = _state(_cursorKey(chat));
     final List<({int id, String uid})> uids;
     try {
       uids = await Chats.entryUids(chat, after: cursor == null ? null : int.tryParse(cursor));
     } catch (e, s) {
       Loggers.app.warning('Log sync: entries of $chat', e, s);
-      return;
+      return false;
     }
-    if (uids.isEmpty) return;
+    if (uids.isEmpty) return true;
     SqliteStore.transact(() {
       final ids = [for (final e in uids) '$chat/${e.uid}'];
       final known = SyncRecorder.stampsOf([for (final id in ids) (chatEntries, id)]);
@@ -176,6 +188,7 @@ abstract final class LogSyncs {
       }
       _setState(_cursorKey(chat), '${uids.last.id}');
     });
+    return true;
   }
 
   static (String, String)? _split(String id) {
@@ -226,11 +239,25 @@ abstract final class LogSyncs {
         return byH != 0 ? byH : a.$1.compareTo(b.$1);
       });
     final seen = <String>{};
+    final early = <SyncOp>[];
     for (final (_, op) in ordered) {
       if (op.d is! Map || !seen.add(op.id)) continue;
       final (chat, _) = _split(op.id) ?? (null, null);
-      if (chat == null || LlmStores.chat.fetch(chat) == null) continue;
+      if (chat == null) continue;
+      if (LlmStores.chat.fetch(chat) == null) {
+        // Its chat not here yet (its meta in a later segment): waits. Dropped
+        // only for a chat deleted here.
+        if (!_deleted(chat)) early.add(op);
+        continue;
+      }
       (byChat[chat] ??= []).add(op);
+    }
+    if (early.isNotEmpty) {
+      SqliteStore.transact(() {
+        for (final op in early) {
+          _setState('$_waitPrefix${op.id}', jsonEncode({'h': op.h, 'd': op.d}));
+        }
+      });
     }
     for (final MapEntry(key: chat, value: ops) in byChat.entries) {
       Set<String>? orphans;
@@ -252,6 +279,10 @@ abstract final class LogSyncs {
       });
     }
   }
+
+  /// Whether chat [id] was here and is deleted: its meta's record says so.
+  static bool _deleted(String id) =>
+      LlmStores.chat.fetch(id) == null && SyncRecorder.stampsOf([(SyncRecorder.kvOf(LlmStores.chat), id)]).isNotEmpty;
 
   /// What was kept of chat [id]'s entries: its records, cursor and waiting
   /// entries. A deleted chat's entries are not sent as removed.

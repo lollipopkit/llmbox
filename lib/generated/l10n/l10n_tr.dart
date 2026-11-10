@@ -227,7 +227,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Otomatik senkronizasyon için aşağıda iCloud veya WebDAV\'ı açın.';
+      'Otomatik senkronizasyon için aşağıda LK Cloud, iCloud veya WebDAV\'ı açın.';
 
   @override
   String get backupPassword => 'Yedek parolası';

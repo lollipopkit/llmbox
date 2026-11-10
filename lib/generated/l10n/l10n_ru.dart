@@ -227,7 +227,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Включите iCloud или WebDAV ниже для автоматической синхронизации.';
+      'Включите LK Cloud, iCloud или WebDAV ниже для автоматической синхронизации.';
 
   @override
   String get backupPassword => 'Пароль резервной копии';

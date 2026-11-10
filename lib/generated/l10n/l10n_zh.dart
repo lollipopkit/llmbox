@@ -223,7 +223,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get syncOffTip => '在下方开启 iCloud 或 WebDAV 以自动同步。';
+  String get syncOffTip => '在下方开启 LK Cloud、iCloud 或 WebDAV 以自动同步。';
 
   @override
   String get backupPassword => '备份密码';
@@ -551,7 +551,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   }
 
   @override
-  String get syncOffTip => '在下方開啟 iCloud 或 WebDAV 以自動同步。';
+  String get syncOffTip => '在下方開啟 LK Cloud、iCloud 或 WebDAV 以自動同步。';
 
   @override
   String get backupPassword => '備份密碼';

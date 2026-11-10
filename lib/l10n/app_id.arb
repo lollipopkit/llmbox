@@ -63,7 +63,7 @@
   "syncing": "Menyinkronkan…",
   "neverSynced": "Belum disinkronkan",
   "lastSyncFmt": "Terakhir disinkronkan {time}",
-  "syncOffTip": "Aktifkan iCloud atau WebDAV di bawah untuk sinkronisasi otomatis.",
+  "syncOffTip": "Aktifkan LK Cloud, iCloud, atau WebDAV di bawah untuk sinkronisasi otomatis.",
   "backupPassword": "Kata sandi cadangan",
   "backupEncrypted": "Cadangan dienkripsi dengannya",
   "backupNotEncrypted": "Belum diatur: cadangan berkas tidak terenkripsi, dan sinkronisasi memerlukannya",

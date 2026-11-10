@@ -63,7 +63,7 @@
   "syncing": "同期中…",
   "neverSynced": "まだ同期していません",
   "lastSyncFmt": "最終同期：{time}",
-  "syncOffTip": "下で iCloud または WebDAV をオンにすると自動で同期します。",
+  "syncOffTip": "下で LK Cloud、iCloud または WebDAV をオンにすると自動で同期します。",
   "backupPassword": "バックアップのパスワード",
   "backupEncrypted": "バックアップはこれで暗号化されます",
   "backupNotEncrypted": "未設定：ファイルのバックアップは平文になり、同期には必要です",

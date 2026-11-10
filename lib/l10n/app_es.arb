@@ -63,7 +63,7 @@
   "syncing": "Sincronizando…",
   "neverSynced": "Aún sin sincronizar",
   "lastSyncFmt": "Última sincronización: {time}",
-  "syncOffTip": "Activa iCloud o WebDAV abajo para sincronizar automáticamente.",
+  "syncOffTip": "Activa LK Cloud, iCloud o WebDAV abajo para sincronizar automáticamente.",
   "backupPassword": "Contraseña de copia de seguridad",
   "backupEncrypted": "Las copias se cifran con ella",
   "backupNotEncrypted": "Sin definir: las copias en archivo van sin cifrar y la sincronización necesita una",

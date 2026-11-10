@@ -63,7 +63,7 @@
   "syncing": "同步中…",
   "neverSynced": "尚未同步",
   "lastSyncFmt": "上次同步：{time}",
-  "syncOffTip": "在下方开启 iCloud 或 WebDAV 以自动同步。",
+  "syncOffTip": "在下方开启 LK Cloud、iCloud 或 WebDAV 以自动同步。",
   "backupPassword": "备份密码",
   "backupEncrypted": "备份将用它加密",
   "backupNotEncrypted": "未设置：文件备份为明文，且同步需要密码",

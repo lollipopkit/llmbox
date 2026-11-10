@@ -500,7 +500,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncOffTip.
   ///
   /// In en, this message translates to:
-  /// **'Turn on iCloud or WebDAV below to sync automatically.'**
+  /// **'Turn on LK Cloud, iCloud or WebDAV below to sync automatically.'**
   String get syncOffTip;
 
   /// No description provided for @backupPassword.

@@ -223,7 +223,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get syncOffTip => '下で iCloud または WebDAV をオンにすると自動で同期します。';
+  String get syncOffTip => '下で LK Cloud、iCloud または WebDAV をオンにすると自動で同期します。';
 
   @override
   String get backupPassword => 'バックアップのパスワード';

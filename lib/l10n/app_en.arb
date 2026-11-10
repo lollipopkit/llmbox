@@ -112,7 +112,7 @@
       }
     }
   },
-  "syncOffTip": "Turn on iCloud or WebDAV below to sync automatically.",
+  "syncOffTip": "Turn on LK Cloud, iCloud or WebDAV below to sync automatically.",
   "backupPassword": "Backup password",
   "backupEncrypted": "Backups are encrypted with it",
   "backupNotEncrypted": "Not set: file backups are plain text, and sync needs one",

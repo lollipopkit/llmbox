@@ -227,7 +227,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Aktifkan iCloud atau WebDAV di bawah untuk sinkronisasi otomatis.';
+      'Aktifkan LK Cloud, iCloud, atau WebDAV di bawah untuk sinkronisasi otomatis.';
 
   @override
   String get backupPassword => 'Kata sandi cadangan';
