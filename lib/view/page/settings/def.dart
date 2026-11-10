@@ -1,6 +1,7 @@
 part of 'setting.dart';
 
 enum SettingsTab {
+  account,
   app,
   providers,
   tool,
@@ -8,6 +9,7 @@ enum SettingsTab {
   about;
 
   String get i18n => switch (this) {
+    account => libL10n.lkcAccount,
     app => libL10n.app,
     providers => l10n.providers,
     tool => l10n.toolsAndMcp,
@@ -16,6 +18,7 @@ enum SettingsTab {
   };
 
   IconData get icon => switch (this) {
+    account => Icons.account_circle_outlined,
     app => Icons.tune,
     providers => Icons.key_outlined,
     tool => Icons.build_outlined,
@@ -25,6 +28,7 @@ enum SettingsTab {
 
   /// Filled, for the one open.
   IconData get selectedIcon => switch (this) {
+    account => Icons.account_circle,
     app => Icons.tune,
     providers => Icons.key,
     tool => Icons.build,
@@ -33,6 +37,7 @@ enum SettingsTab {
   };
 
   Widget get page => switch (this) {
+    account => LkcAccountPage(args: LkcPageArgs(Lkc.client, embedded: true)),
     app => const AppSettingsPage(),
     providers => const ProvidersPage(),
     tool => const ToolsPage(),

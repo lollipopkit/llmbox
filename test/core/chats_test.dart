@@ -101,7 +101,7 @@ void main() {
     (server, seen) = await mockServer();
     SqliteDb.openInMemory();
     await Stores.init();
-    LlmStores.llm.customProviders.set([
+    LlmStores.llm.putCustomProvider(
       LlmCustomProvider(
         id: 'mock',
         name: 'Mock',
@@ -109,7 +109,7 @@ void main() {
         baseUrl: 'http://127.0.0.1:${server.port}/v1',
         models: const ['echo'],
       ),
-    ]);
+    );
     Stores.setting.genTitle.set(false);
     await initLlm();
   });

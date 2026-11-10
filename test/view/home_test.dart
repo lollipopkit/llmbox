@@ -57,7 +57,7 @@ void main() {
     await Stores.init();
     Stores.setting.autoCheckUpdate.set(false);
     Stores.setting.genTitle.set(false);
-    LlmStores.llm.customProviders.set([
+    LlmStores.llm.putCustomProvider(
       LlmCustomProvider(
         id: 'mock',
         name: 'Mock',
@@ -65,7 +65,7 @@ void main() {
         baseUrl: 'http://127.0.0.1:${server.port}/v1',
         models: const ['echo'],
       ),
-    ]);
+    );
     await initLlm(credentials: _credentials);
   });
 
@@ -132,7 +132,7 @@ void main() {
     }
     await tester.pumpAndSettle();
     expect(find.byType(CustomProviderPage), findsNothing);
-    final saved = LlmStores.llm.customProviders.get()!.last;
+    final saved = LlmStores.llm.customProviders.singleWhere((p) => p.id != 'mock');
     expect(saved.name, 'Local');
     expect((await tester.runAsync(() => _credentials.read(saved.id)))?.key, 'sk-local');
 

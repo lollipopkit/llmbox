@@ -3,12 +3,16 @@ import 'package:fl_pi_llm_ui/fl_pi_llm_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:llmbox/core/tool/shell.dart';
 
+import 'chats_test.dart' show nativeLib;
+
 /// On the host, as on a desktop: the commands run here. They are POSIX
 /// `sh`; Windows runs cmd.
 const _posix = '!windows';
 
 void main() {
   const tool = TfShell();
+  // The risk badge classifies in the native library.
+  setUpAll(() => FlPiLlm.loadLibrary(externalLibrary: nativeLib()));
   Future<String> run(Map<String, dynamic> args, [LlmCancelToken? cancel]) async =>
       (await tool.run(args, ToolCtx('chat', cancel ?? LlmCancelToken()))).content.map((e) => '${(e as Map)['text'] ?? ''}').join();
 
@@ -46,7 +50,7 @@ void main() {
   }, testOn: _posix);
 
   test('says what kind of command it is before it runs', () {
-    expect(CommandRisk.classify('rm -rf ~/x'), CommandRisk.destructive);
+    expect(LlmPermissionRules.classify('rm -rf ~/x'), LlmCommandRisk.destructive);
     expect(tool.allowAlways, isFalse);
   });
 }

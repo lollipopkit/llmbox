@@ -58,6 +58,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // AppAuth's redirect receiver: `Lkc.redirectUrl`.
+        manifestPlaceholders += [appAuthRedirectScheme: 'llmbox']
     }
 
     // The release key: android/app/llmbox.p12 (EC P-384, PKCS12, one

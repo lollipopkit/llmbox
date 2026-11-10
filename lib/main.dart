@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fl_lib/fl_lib.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:llmbox/app.dart';
+import 'package:llmbox/core/lkc.dart';
 import 'package:llmbox/core/tool/shell.dart';
 import 'package:llmbox/core/tty.dart';
 import 'package:llmbox/core/util/sync.dart';
@@ -98,6 +99,8 @@ Future<void> _initAppComponents() async {
   if (LlmStores.tool.enabled.get()) unawaited(McpTools.connectStored());
 
   BakSync.instance.init();
+  // Off the launch path: it reads the keychain and asks homebase who is signed in.
+  unawaited(Lkc.init());
   // Only when sync is on, and never without a password: see BakSync.
   BakSync.instance.syncSoon();
 }
