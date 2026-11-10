@@ -34,7 +34,8 @@ class PushSwitcher extends StatelessWidget {
   final Widget child;
   final bool reverse;
 
-  static const _push = FadeForwardsPageTransitionsBuilder();
+  // No ground of its own: the pane's shows through, as it does around it.
+  static const _push = FadeForwardsPageTransitionsBuilder(backgroundColor: Colors.transparent);
 
   @override
   Widget build(BuildContext context) {
