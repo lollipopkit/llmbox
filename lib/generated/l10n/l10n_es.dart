@@ -146,10 +146,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get providers => 'Proveedores';
 
   @override
-  String get keyInKeychain =>
-      'Guardada en el llavero del sistema, nunca en las copias de seguridad.';
-
-  @override
   String providersCountFmt(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,
@@ -249,7 +245,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Activa iCloud o WebDAV abajo para sincronizar automáticamente.';
+      'Activa LK Cloud, iCloud o WebDAV abajo para sincronizar automáticamente.';
 
   @override
   String get backupPassword => 'Contraseña de copia de seguridad';
@@ -341,4 +337,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get linuxNone => 'No instalado';
+
+  @override
+  String get syncChats => 'Sincronizar chats';
+
+  @override
+  String get syncAi => 'Sincronizar modelos, herramientas y memoria';
+
+  @override
+  String get syncSecrets => 'Sincronizar claves de API y secretos de MCP';
+
+  @override
+  String get syncPasswordMismatch =>
+      'La contraseña de copia no abre la clave de esta sincronización: otro dispositivo la cambió';
+
+  @override
+  String get syncTooNew =>
+      'Sincronizado desde una versión más nueva: actualiza para seguir sincronizando';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud rechazó la sincronización ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Reemplazar la clave de sincronización';
 }

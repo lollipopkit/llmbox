@@ -147,10 +147,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get providers => 'Fournisseurs';
 
   @override
-  String get keyInKeychain =>
-      'Stockée dans le trousseau du système, jamais dans les sauvegardes.';
-
-  @override
   String providersCountFmt(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,
@@ -257,7 +253,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Activez iCloud ou WebDAV ci-dessous pour synchroniser automatiquement.';
+      'Activez LK Cloud, iCloud ou WebDAV ci-dessous pour synchroniser automatiquement.';
 
   @override
   String get backupPassword => 'Mot de passe de sauvegarde';
@@ -349,4 +345,29 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get linuxNone => 'Non installé';
+
+  @override
+  String get syncChats => 'Synchroniser les discussions';
+
+  @override
+  String get syncAi => 'Synchroniser modèles, outils et mémoire';
+
+  @override
+  String get syncSecrets => 'Synchroniser les clés d\'API et les secrets MCP';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Le mot de passe de sauvegarde n\'ouvre pas la clé de cette synchronisation : un autre appareil l\'a changé';
+
+  @override
+  String get syncTooNew =>
+      'Synchronisé depuis une version plus récente : mettez à jour pour continuer';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud a refusé la synchronisation ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Remplacer la clé de synchronisation';
 }

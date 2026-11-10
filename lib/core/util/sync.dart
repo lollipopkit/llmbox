@@ -6,7 +6,6 @@ import 'package:fl_pi_llm_ui/fl_pi_llm_ui.dart';
 import 'package:llmbox/data/model/backup.dart';
 import 'package:llmbox/data/res/l10n.dart';
 import 'package:llmbox/data/store/all.dart';
-import 'package:llmbox/data/store/setting.dart';
 
 final icloud = ICloud(containerId: 'iCloud.tech.lolli.gptbox');
 
@@ -69,7 +68,7 @@ final class BakSync extends SyncIface<Mergeable, dynamic> {
       ..clear()
       ..addAll([
         for (final s in [LlmStores.chat.watch(), LlmStores.llm.watch(), LlmStores.tool.watch(), LlmStores.memory.watch()]) s.listen((_) => syncSoon()),
-        Stores.setting.watch().where((k) => !SettingStore.deviceLocalKeys.contains(k)).listen((_) => syncSoon()),
+        Stores.setting.watch().where((k) => !Stores.setting.isDeviceLocalKey(k)).listen((_) => syncSoon()),
       ]);
   }
 

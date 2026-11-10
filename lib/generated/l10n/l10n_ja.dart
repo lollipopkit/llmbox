@@ -143,9 +143,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get providers => 'プロバイダー';
 
   @override
-  String get keyInKeychain => 'システムのキーチェーンに保存され、バックアップには含まれません。';
-
-  @override
   String providersCountFmt(int n) {
     return '$n 個のプロバイダー';
   }
@@ -226,7 +223,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get syncOffTip => '下で iCloud または WebDAV をオンにすると自動で同期します。';
+  String get syncOffTip => '下で LK Cloud、iCloud または WebDAV をオンにすると自動で同期します。';
 
   @override
   String get backupPassword => 'バックアップのパスワード';
@@ -312,4 +309,28 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get linuxNone => '未インストール';
+
+  @override
+  String get syncChats => 'チャットを同期';
+
+  @override
+  String get syncAi => 'モデル、ツール、メモリを同期';
+
+  @override
+  String get syncSecrets => 'API キーと MCP シークレットを同期';
+
+  @override
+  String get syncPasswordMismatch =>
+      'バックアップパスワードではこの同期のキーを開けません：別のデバイスで変更されました';
+
+  @override
+  String get syncTooNew => '新しいバージョンから同期されました：同期を続けるには更新してください';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud が同期を拒否しました（$reason）';
+  }
+
+  @override
+  String get rotateSyncKey => '同期キーを置き換える';
 }

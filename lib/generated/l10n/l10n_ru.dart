@@ -146,10 +146,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get providers => 'Провайдеры';
 
   @override
-  String get keyInKeychain =>
-      'Хранится в системной связке ключей, никогда не попадает в резервные копии.';
-
-  @override
   String providersCountFmt(int n) {
     return 'Провайдеров: $n';
   }
@@ -231,7 +227,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Включите iCloud или WebDAV ниже для автоматической синхронизации.';
+      'Включите LK Cloud, iCloud или WebDAV ниже для автоматической синхронизации.';
 
   @override
   String get backupPassword => 'Пароль резервной копии';
@@ -323,4 +319,29 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get linuxNone => 'Не установлено';
+
+  @override
+  String get syncChats => 'Синхронизировать чаты';
+
+  @override
+  String get syncAi => 'Синхронизировать модели, инструменты и память';
+
+  @override
+  String get syncSecrets => 'Синхронизировать API-ключи и секреты MCP';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Пароль резервной копии не открывает ключ этой синхронизации: другое устройство изменило его';
+
+  @override
+  String get syncTooNew =>
+      'Синхронизировано из более новой версии: обновите, чтобы продолжить';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud отклонил синхронизацию ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Заменить ключ синхронизации';
 }

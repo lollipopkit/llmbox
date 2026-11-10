@@ -146,10 +146,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get providers => 'Providers';
 
   @override
-  String get keyInKeychain =>
-      'Opgeslagen in de sleutelhanger van het systeem, nooit in back-ups.';
-
-  @override
   String providersCountFmt(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,
@@ -250,7 +246,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Zet hieronder iCloud of WebDAV aan om automatisch te synchroniseren.';
+      'Zet hieronder LK Cloud, iCloud of WebDAV aan om automatisch te synchroniseren.';
 
   @override
   String get backupPassword => 'Back-upwachtwoord';
@@ -343,4 +339,29 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get linuxNone => 'Niet geïnstalleerd';
+
+  @override
+  String get syncChats => 'Chats synchroniseren';
+
+  @override
+  String get syncAi => 'Modellen, tools en geheugen synchroniseren';
+
+  @override
+  String get syncSecrets => 'API-sleutels en MCP-geheimen synchroniseren';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Het back-upwachtwoord opent de sleutel van deze synchronisatie niet: een ander apparaat heeft het gewijzigd';
+
+  @override
+  String get syncTooNew =>
+      'Gesynchroniseerd vanaf een nieuwere versie: werk bij om te blijven synchroniseren';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud weigerde de synchronisatie ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Synchronisatiesleutel vervangen';
 }

@@ -143,9 +143,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get providers => '服务商';
 
   @override
-  String get keyInKeychain => '保存在系统钥匙串中，不会进入备份。';
-
-  @override
   String providersCountFmt(int n) {
     return '$n 个服务商';
   }
@@ -226,7 +223,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get syncOffTip => '在下方开启 iCloud 或 WebDAV 以自动同步。';
+  String get syncOffTip => '在下方开启 LK Cloud、iCloud 或 WebDAV 以自动同步。';
 
   @override
   String get backupPassword => '备份密码';
@@ -311,6 +308,29 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get linuxNone => '未安装';
+
+  @override
+  String get syncChats => '同步聊天';
+
+  @override
+  String get syncAi => '同步模型、工具和记忆';
+
+  @override
+  String get syncSecrets => '同步 API 密钥和 MCP 凭据';
+
+  @override
+  String get syncPasswordMismatch => '备份密码打不开此同步的密钥：另一台设备修改了密码';
+
+  @override
+  String get syncTooNew => '同步数据来自更新的版本：请更新以继续同步';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud 拒绝了同步（$reason）';
+  }
+
+  @override
+  String get rotateSyncKey => '更换同步密钥';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -451,9 +471,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get providers => '服務商';
 
   @override
-  String get keyInKeychain => '儲存在系統鑰匙圈中，不會進入備份。';
-
-  @override
   String providersCountFmt(int n) {
     return '$n 個服務商';
   }
@@ -534,7 +551,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   }
 
   @override
-  String get syncOffTip => '在下方開啟 iCloud 或 WebDAV 以自動同步。';
+  String get syncOffTip => '在下方開啟 LK Cloud、iCloud 或 WebDAV 以自動同步。';
 
   @override
   String get backupPassword => '備份密碼';
@@ -619,4 +636,27 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get linuxNone => '未安裝';
+
+  @override
+  String get syncChats => '同步聊天';
+
+  @override
+  String get syncAi => '同步模型、工具和記憶';
+
+  @override
+  String get syncSecrets => '同步 API 金鑰和 MCP 憑證';
+
+  @override
+  String get syncPasswordMismatch => '備份密碼打不開此同步的金鑰：另一台裝置修改了密碼';
+
+  @override
+  String get syncTooNew => '同步資料來自更新的版本：請更新以繼續同步';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud 拒絕了同步（$reason）';
+  }
+
+  @override
+  String get rotateSyncKey => '更換同步金鑰';
 }

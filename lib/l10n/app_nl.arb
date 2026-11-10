@@ -41,7 +41,6 @@
   "startChatTip": "Kies hieronder een model en zeg iets.",
   "noProviderKey": "Nog geen enkele provider heeft een sleutel. Voeg er een toe om te chatten.",
   "providers": "Providers",
-  "keyInKeychain": "Opgeslagen in de sleutelhanger van het systeem, nooit in back-ups.",
   "providersCountFmt": "{n, plural, =1{1 provider} other{{n} providers}}",
   "today": "Vandaag",
   "earlier": "Eerder",
@@ -64,7 +63,7 @@
   "syncing": "Synchroniseren…",
   "neverSynced": "Nog niet gesynchroniseerd",
   "lastSyncFmt": "Laatst gesynchroniseerd: {time}",
-  "syncOffTip": "Zet hieronder iCloud of WebDAV aan om automatisch te synchroniseren.",
+  "syncOffTip": "Zet hieronder LK Cloud, iCloud of WebDAV aan om automatisch te synchroniseren.",
   "backupPassword": "Back-upwachtwoord",
   "backupEncrypted": "Back-ups worden hiermee versleuteld",
   "backupNotEncrypted": "Niet ingesteld: bestandsback-ups zijn onversleuteld en synchronisatie vereist er een",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "{distro} {version} downloaden, {size} MB?",
   "linuxRemoveTip": "{name} en alles wat erin is geïnstalleerd verwijderen?",
   "linuxInUse": "Er draait een opdracht in",
-  "linuxNone": "Niet geïnstalleerd"
+  "linuxNone": "Niet geïnstalleerd",
+  "syncChats": "Chats synchroniseren",
+  "syncAi": "Modellen, tools en geheugen synchroniseren",
+  "syncSecrets": "API-sleutels en MCP-geheimen synchroniseren",
+  "syncPasswordMismatch": "Het back-upwachtwoord opent de sleutel van deze synchronisatie niet: een ander apparaat heeft het gewijzigd",
+  "syncTooNew": "Gesynchroniseerd vanaf een nieuwere versie: werk bij om te blijven synchroniseren",
+  "syncRefused": "LK Cloud weigerde de synchronisatie ({reason})",
+  "rotateSyncKey": "Synchronisatiesleutel vervangen"
 }

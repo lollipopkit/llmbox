@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:fl_lib/fl_lib.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:llmbox/core/lkc.dart';
+import 'package:llmbox/core/util/log_sync.dart';
 import 'package:llmbox/core/util/sync.dart';
 import 'package:llmbox/data/model/backup.dart';
 import 'package:llmbox/data/res/l10n.dart';
@@ -46,8 +49,16 @@ final class _BackupPageState extends State<BackupPage> {
       children: [
         SettingsGroup(
           title: l10n.sync,
-          rows: [_status(), _password(), _syncSettings()],
+          rows: [
+            _status(),
+            _password(),
+            _syncSettings(),
+            _group(LogSyncs.chats, Icons.chat_bubble_outline, l10n.syncChats),
+            _group(LogSyncs.ai, Icons.auto_awesome_outlined, l10n.syncAi),
+            _group(LogSyncs.secrets, Icons.key_outlined, l10n.syncSecrets),
+          ],
         ),
+        SettingsGroup(title: 'LK Cloud', rows: [_lkcAuto(), _rotateKey()]),
         if (isMacOS || isIOS) SettingsGroup(title: 'iCloud', rows: [_icloudAuto()]),
         SettingsGroup(
           title: 'WebDAV',
@@ -73,7 +84,7 @@ final class _BackupPageState extends State<BackupPage> {
           ],
           footer: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 13),
-            child: Text('${l10n.backupTip} ${l10n.keyInKeychain}', style: UIs.text12Grey),
+            child: Text(l10n.backupTip, style: UIs.text12Grey),
           ),
         ),
       ],
@@ -83,17 +94,54 @@ final class _BackupPageState extends State<BackupPage> {
   // --------------------------------------------------------------------------
   // Sync
 
+  /// Whether anything syncs on its own.
+  static bool get _anySync => BakSync.enabled || LogSyncs.lkcEnabled.get();
+
+  /// What the operation-log syncs last ran into, as the person reads it.
+  static String? _logIssue() {
+    if (SyncKeyring.passwordMismatch.value.isNotEmpty) return l10n.syncPasswordMismatch;
+    if (LogSyncs.lkc.tooNew.value || LogSyncs.files.tooNew.value) return l10n.syncTooNew;
+    for (final e in [LogSyncs.lkc.lastFailure.value, LogSyncs.files.lastFailure.value]) {
+      switch (e) {
+        case null || SyncPasswordMissing() || SyncPasswordMismatch():
+          continue;
+        case SyncRefused(:final reason):
+          return l10n.syncRefused(reason);
+        default:
+          return '$e';
+      }
+    }
+    return null;
+  }
+
   Widget _status() {
     final sync = BakSync.instance;
     return ListenableBuilder(
-      listenable: Listenable.merge([sync.syncing, sync.lastError, sync.lastSyncAt]),
+      listenable: Listenable.merge([
+        sync.syncing,
+        sync.lastError,
+        sync.lastSyncAt,
+        LogSyncs.lkcEnabled.listenable(),
+        SyncKeyring.passwordMismatch,
+        LogSyncs.lkc.tooNew,
+        LogSyncs.lkc.lastFailure,
+        LogSyncs.files.tooNew,
+        LogSyncs.files.lastFailure,
+        LogSyncs.lkc.running,
+        LogSyncs.lkc.lastSyncAt,
+        LogSyncs.files.running,
+        LogSyncs.files.lastSyncAt,
+      ]),
       builder: (context, _) {
-        final err = sync.lastError.value;
-        final at = sync.lastSyncAt.value;
+        final err = sync.lastError.value ?? _logIssue();
+        final syncing = sync.syncing.value || LogSyncs.lkc.running.value || LogSyncs.files.running.value;
+        final at = [sync.lastSyncAt.value, LogSyncs.lkc.lastSyncAt.value, LogSyncs.files.lastSyncAt.value]
+            .nonNulls
+            .fold<DateTime?>(null, (a, b) => a == null || b.isAfter(a) ? b : a);
         final String sub;
-        if (!BakSync.enabled) {
+        if (!_anySync) {
           sub = l10n.syncOffTip;
-        } else if (sync.syncing.value) {
+        } else if (syncing) {
           sub = l10n.syncing;
         } else {
           sub = at == null ? l10n.neverSynced : l10n.lastSyncFmt(at.simple());
@@ -103,13 +151,78 @@ final class _BackupPageState extends State<BackupPage> {
           title: l10n.syncNow,
           subtitle: sub,
           error: err,
-          trailing: sync.syncing.value
+          trailing: syncing
               ? const SizedLoading(20, padding: 6, builder: SizedLoading.circularBuilder)
               : const RowChevron(),
-          onTap: !BakSync.enabled || sync.syncing.value ? null : () => sync.syncNow(),
+          onTap: !_anySync || syncing ? null : _syncNow,
         );
       },
     );
+  }
+
+  Future<void> _syncNow() async {
+    await Future.wait([
+      if (BakSync.enabled) BakSync.instance.syncNow(),
+      LogSyncs.lkc.sync(),
+      LogSyncs.files.sync(),
+    ]);
+  }
+
+  /// One group of records, synced or not on this device.
+  Widget _group(SyncGroup group, IconData icon, String title) {
+    return SettingsRow(
+      icon: icon,
+      title: title,
+      trailing: StoreSwitch(prop: group.pref),
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // LK Cloud
+
+  Widget _lkcAuto() {
+    return SettingsRow(
+      icon: Icons.cloud_sync_outlined,
+      title: l10n.auto,
+      trailing: StoreSwitch(
+        prop: LogSyncs.lkcEnabled,
+        validator: (on) async {
+          if (!on) return true;
+          if (!Lkc.client.signedIn || Lkc.client.user.value == null) {
+            Toast.show(libL10n.lkcNotSignedIn);
+            return false;
+          }
+          return _ensurePassword();
+        },
+      ),
+    );
+  }
+
+  Widget _rotateKey() {
+    return LogSyncs.lkcEnabled.listenable().listenVal((on) {
+      return SettingsRow(
+        icon: Icons.key_off_outlined,
+        title: l10n.rotateSyncKey,
+        trailing: const RowChevron(),
+        onTap: on ? _onRotateKey : null,
+      );
+    });
+  }
+
+  Future<void> _onRotateKey() async {
+    final ok = await context.showRoundDialog<bool>(
+      title: l10n.rotateSyncKey,
+      child: Text(libL10n.askContinue(l10n.rotateSyncKey)),
+      actions: Btnx.cancelRedOk,
+    );
+    if (ok != true) return;
+    try {
+      await LogSyncs.lkc.rotateKey();
+      Toast.success(libL10n.success);
+    } catch (e, s) {
+      Loggers.app.warning('Replace sync key', e, s);
+      Toast.show('$e');
+    }
   }
 
   Widget _password() {
@@ -165,15 +278,20 @@ final class _BackupPageState extends State<BackupPage> {
       Toast.show(libL10n.empty);
       return false;
     }
+    // The sync keys are sealed with it: sealed again with the new one.
+    await SyncKeyring.passwordChanged(await BakSync.password);
     await SecureStoreProps.bakPwd.write(v);
     BakSync.forgetCheckpoint();
     await _readPassword();
+    await SyncKeyring.recheck();
+    unawaited(LogSyncs.lkc.sync());
+    unawaited(LogSyncs.files.sync());
     Toast.success(libL10n.success);
     return true;
   }
 
   Future<void> _deletePassword() async {
-    if (BakSync.enabled) {
+    if (_anySync) {
       Toast.show(l10n.backupPasswordRequired);
       return;
     }

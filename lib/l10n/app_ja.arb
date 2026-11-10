@@ -41,7 +41,6 @@
   "startChatTip": "下でモデルを選んで話しかけてください。",
   "noProviderKey": "キーが設定されたプロバイダーがまだありません。追加するとチャットを始められます。",
   "providers": "プロバイダー",
-  "keyInKeychain": "システムのキーチェーンに保存され、バックアップには含まれません。",
   "providersCountFmt": "{n} 個のプロバイダー",
   "today": "今日",
   "earlier": "それ以前",
@@ -64,7 +63,7 @@
   "syncing": "同期中…",
   "neverSynced": "まだ同期していません",
   "lastSyncFmt": "最終同期：{time}",
-  "syncOffTip": "下で iCloud または WebDAV をオンにすると自動で同期します。",
+  "syncOffTip": "下で LK Cloud、iCloud または WebDAV をオンにすると自動で同期します。",
   "backupPassword": "バックアップのパスワード",
   "backupEncrypted": "バックアップはこれで暗号化されます",
   "backupNotEncrypted": "未設定：ファイルのバックアップは平文になり、同期には必要です",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "{distro} {version}（{size} MB）をダウンロードしますか？",
   "linuxRemoveTip": "{name} とその中にインストールしたものをすべて削除しますか？",
   "linuxInUse": "コマンドが実行中です",
-  "linuxNone": "未インストール"
+  "linuxNone": "未インストール",
+  "syncChats": "チャットを同期",
+  "syncAi": "モデル、ツール、メモリを同期",
+  "syncSecrets": "API キーと MCP シークレットを同期",
+  "syncPasswordMismatch": "バックアップパスワードではこの同期のキーを開けません：別のデバイスで変更されました",
+  "syncTooNew": "新しいバージョンから同期されました：同期を続けるには更新してください",
+  "syncRefused": "LK Cloud が同期を拒否しました（{reason}）",
+  "rotateSyncKey": "同期キーを置き換える"
 }

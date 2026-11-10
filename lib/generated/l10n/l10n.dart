@@ -365,12 +365,6 @@ abstract class AppLocalizations {
   /// **'Providers'**
   String get providers;
 
-  /// No description provided for @keyInKeychain.
-  ///
-  /// In en, this message translates to:
-  /// **'Stored in the system keychain, never in backups.'**
-  String get keyInKeychain;
-
   /// No description provided for @providersCountFmt.
   ///
   /// In en, this message translates to:
@@ -506,7 +500,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncOffTip.
   ///
   /// In en, this message translates to:
-  /// **'Turn on iCloud or WebDAV below to sync automatically.'**
+  /// **'Turn on LK Cloud, iCloud or WebDAV below to sync automatically.'**
   String get syncOffTip;
 
   /// No description provided for @backupPassword.
@@ -664,6 +658,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not installed'**
   String get linuxNone;
+
+  /// No description provided for @syncChats.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync chats'**
+  String get syncChats;
+
+  /// No description provided for @syncAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync models, tools and memory'**
+  String get syncAi;
+
+  /// No description provided for @syncSecrets.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync API keys and MCP secrets'**
+  String get syncSecrets;
+
+  /// No description provided for @syncPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup password does not open this sync\'s key: another device changed it'**
+  String get syncPasswordMismatch;
+
+  /// No description provided for @syncTooNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced from a newer version: update to keep syncing'**
+  String get syncTooNew;
+
+  /// No description provided for @syncRefused.
+  ///
+  /// In en, this message translates to:
+  /// **'LK Cloud refused the sync ({reason})'**
+  String syncRefused(String reason);
+
+  /// No description provided for @rotateSyncKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace sync key'**
+  String get rotateSyncKey;
 }
 
 class _AppLocalizationsDelegate

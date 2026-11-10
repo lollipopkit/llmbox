@@ -146,10 +146,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get providers => 'Sağlayıcılar';
 
   @override
-  String get keyInKeychain =>
-      'Sistem anahtar zincirinde saklanır, yedeklere asla girmez.';
-
-  @override
   String providersCountFmt(int n) {
     return '$n sağlayıcı';
   }
@@ -231,7 +227,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncOffTip =>
-      'Otomatik senkronizasyon için aşağıda iCloud veya WebDAV\'ı açın.';
+      'Otomatik senkronizasyon için aşağıda LK Cloud, iCloud veya WebDAV\'ı açın.';
 
   @override
   String get backupPassword => 'Yedek parolası';
@@ -322,4 +318,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get linuxNone => 'Kurulu değil';
+
+  @override
+  String get syncChats => 'Sohbetleri eşitle';
+
+  @override
+  String get syncAi => 'Modelleri, araçları ve belleği eşitle';
+
+  @override
+  String get syncSecrets => 'API anahtarlarını ve MCP sırlarını eşitle';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Yedek parolası bu eşitlemenin anahtarını açmıyor: başka bir cihaz değiştirdi';
+
+  @override
+  String get syncTooNew =>
+      'Daha yeni bir sürümden eşitlendi: eşitlemeye devam etmek için güncelleyin';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud eşitlemeyi reddetti ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Eşitleme anahtarını değiştir';
 }

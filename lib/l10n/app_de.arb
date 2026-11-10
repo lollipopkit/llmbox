@@ -41,7 +41,6 @@
   "startChatTip": "Wähle unten ein Modell und schreib etwas.",
   "noProviderKey": "Noch kein Anbieter hat einen Schlüssel. Füge einen hinzu, um zu chatten.",
   "providers": "Anbieter",
-  "keyInKeychain": "Im Schlüsselbund des Systems gespeichert, nie in Backups.",
   "providersCountFmt": "{n} Anbieter",
   "today": "Heute",
   "earlier": "Früher",
@@ -64,7 +63,7 @@
   "syncing": "Wird synchronisiert…",
   "neverSynced": "Noch nicht synchronisiert",
   "lastSyncFmt": "Zuletzt synchronisiert: {time}",
-  "syncOffTip": "Schalte unten iCloud oder WebDAV ein, um automatisch zu synchronisieren.",
+  "syncOffTip": "Schalte unten LK Cloud, iCloud oder WebDAV ein, um automatisch zu synchronisieren.",
   "backupPassword": "Backup-Passwort",
   "backupEncrypted": "Backups werden damit verschlüsselt",
   "backupNotEncrypted": "Nicht gesetzt: Datei-Backups sind unverschlüsselt, und die Synchronisierung braucht eines",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "{distro} {version} herunterladen, {size} MB?",
   "linuxRemoveTip": "{name} und alles darin Installierte löschen?",
   "linuxInUse": "Darin läuft ein Befehl",
-  "linuxNone": "Nicht installiert"
+  "linuxNone": "Nicht installiert",
+  "syncChats": "Chats synchronisieren",
+  "syncAi": "Modelle, Werkzeuge und Gedächtnis synchronisieren",
+  "syncSecrets": "API-Schlüssel und MCP-Geheimnisse synchronisieren",
+  "syncPasswordMismatch": "Das Backup-Passwort öffnet den Schlüssel dieser Synchronisierung nicht: ein anderes Gerät hat es geändert",
+  "syncTooNew": "Von einer neueren Version synchronisiert: aktualisieren, um weiter zu synchronisieren",
+  "syncRefused": "LK Cloud hat die Synchronisierung abgelehnt ({reason})",
+  "rotateSyncKey": "Sync-Schlüssel ersetzen"
 }

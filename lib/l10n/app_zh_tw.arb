@@ -41,7 +41,6 @@
   "startChatTip": "在下方選擇模型，然後開始對話。",
   "noProviderKey": "還沒有服務商設定了金鑰。新增一個即可開始聊天。",
   "providers": "服務商",
-  "keyInKeychain": "儲存在系統鑰匙圈中，不會進入備份。",
   "providersCountFmt": "{n} 個服務商",
   "today": "今天",
   "earlier": "更早",
@@ -64,7 +63,7 @@
   "syncing": "同步中…",
   "neverSynced": "尚未同步",
   "lastSyncFmt": "上次同步：{time}",
-  "syncOffTip": "在下方開啟 iCloud 或 WebDAV 以自動同步。",
+  "syncOffTip": "在下方開啟 LK Cloud、iCloud 或 WebDAV 以自動同步。",
   "backupPassword": "備份密碼",
   "backupEncrypted": "備份將用它加密",
   "backupNotEncrypted": "未設定：檔案備份為明文，且同步需要密碼",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "下載 {distro} {version}，{size} MB？",
   "linuxRemoveTip": "刪除 {name} 及其中安裝的所有內容？",
   "linuxInUse": "有指令正在其中執行",
-  "linuxNone": "未安裝"
+  "linuxNone": "未安裝",
+  "syncChats": "同步聊天",
+  "syncAi": "同步模型、工具和記憶",
+  "syncSecrets": "同步 API 金鑰和 MCP 憑證",
+  "syncPasswordMismatch": "備份密碼打不開此同步的金鑰：另一台裝置修改了密碼",
+  "syncTooNew": "同步資料來自更新的版本：請更新以繼續同步",
+  "syncRefused": "LK Cloud 拒絕了同步（{reason}）",
+  "rotateSyncKey": "更換同步金鑰"
 }

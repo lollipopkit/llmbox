@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:fl_lib/fl_lib.dart';
 import 'package:flutter/foundation.dart';
+import 'package:llmbox/core/util/log_sync.dart';
 import 'package:llmbox/data/store/all.dart';
 import 'package:llmbox/data/store/setting.dart';
 import 'package:fl_pi_llm_ui/fl_pi_llm_ui.dart';
@@ -84,11 +85,11 @@ final class Backup implements Mergeable {
     final ts = data[Stores.setting.lastUpdateTsKey];
     return {
       for (final MapEntry(:key, :value) in data.entries)
-        if (!SettingStore.deviceLocalKeys.contains(key)) key: value,
+        if (!Stores.setting.isDeviceLocalKey(key)) key: value,
       if (ts is Map)
         Stores.setting.lastUpdateTsKey: {
           for (final MapEntry(:key, :value) in ts.entries)
-            if (!SettingStore.deviceLocalKeys.contains(key)) key: value,
+            if (!Stores.setting.isDeviceLocalKey(key)) key: value,
         },
     };
   }
@@ -105,7 +106,7 @@ final class Backup implements Mergeable {
       if (includeSettings)
         newest({
           for (final MapEntry(:key, :value) in (Stores.setting.lastUpdateTs ?? const <String, int>{}).entries)
-            if (!SettingStore.deviceLocalKeys.contains(key)) key: value,
+            if (!Stores.setting.isDeviceLocalKey(key)) key: value,
         }),
       newest({for (final s in await Llm.rt.sessions()) s.id: s.modifiedAt.millisecondsSinceEpoch}),
     ].join('.');
@@ -243,6 +244,17 @@ final class Backup implements Mergeable {
     await Llm.applyCustomProviders();
     await Chats.reconfigure();
     RNodes.app.notify();
+    // What the chats gained, for the log sync.
+    await LogSyncs.catchUp();
+  }
+
+  /// [key] of [store], written by a merge, for the operation-log sync: at
+  /// [ts] as no device's, so an edit made since on any device wins over it;
+  /// a restore the user asked for ([force]) as an edit made here now.
+  static void _record(SqliteStore store, String key, int ts, {required bool force}) {
+    if (!SyncRecorder.syncedStores.containsKey(store.name) || store.isDeviceLocalKey(key)) return;
+    final c = SyncRecorder.kvOf(store);
+    force ? SyncRecorder.record(c, key) : SyncRecorder.applying(() => SyncRecorder.record(c, key, at: ts));
   }
 
   /// One store, per key: see [merge]. Keys in [keep] are this device's alone
@@ -278,11 +290,19 @@ final class Backup implements Mergeable {
           final value = data[key];
           if (!take || value == null) continue;
           store.set(key, value, updateLastUpdateTsOnSet: false);
-          if (b > 0) unawaited(store.updateLastUpdateTs(ts: b, key: key));
-        } else if (inCur && bakTs.containsKey(key) && b > c) {
-          // Deleted there after it was last written here.
-          store.remove(key, updateLastUpdateTsOnRemove: false);
+          // Restored by hand: an edit made here now, as its log stamp says.
+          if (force) {
+            unawaited(store.updateLastUpdateTs(key: key));
+          } else if (b > 0) {
+            unawaited(store.updateLastUpdateTs(ts: b, key: key));
+          }
+          _record(store, key, b, force: force);
+        } else if (bakTs.containsKey(key) && b > c) {
+          // Deleted there after it was last written here; not here either:
+          // the deletion kept, so an older value does not come back.
+          if (inCur) store.remove(key, updateLastUpdateTsOnRemove: false);
           unawaited(store.updateLastUpdateTs(ts: b, key: key));
+          _record(store, key, b, force: false);
         }
       }
     });

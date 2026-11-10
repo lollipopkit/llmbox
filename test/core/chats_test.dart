@@ -251,17 +251,17 @@ void main() {
 
     // The other device: the chat as it was, continued there.
     final other = Chats.create();
-    expect(await Chats.importChat(other, base.entries, tip: base.tip), 2);
+    expect((await Chats.importChat(other, base.entries, tip: base.tip)).added, 2);
     await Chats.open(other);
     await Chats.send(other, 'there');
     await Chats.close(other);
 
-    expect(await Chats.importChat(id, (await Chats.exportChat(other)).entries), 2);
+    expect((await Chats.importChat(id, (await Chats.exportChat(other)).entries)).added, 2);
     expect(Chats.openOf(id), same(chat));
     final said = [for (final e in await chat.session.tree()) e.message?.text];
     expect(said, containsAll(['shared', 'here', 'there']));
     expect(chat.entries.value.map((e) => e.message?.text), containsAllInOrder(['shared', 'here']), reason: 'it stays where it stood');
-    expect(await Chats.importChat(id, (await Chats.exportChat(other)).entries), 0, reason: 'settled');
+    expect((await Chats.importChat(id, (await Chats.exportChat(other)).entries)).added, 0, reason: 'settled');
     // And it still takes a message.
     await Chats.send(id, 'next');
     expect(chat.entries.value.last.message?.text, 'Echo: next ');
