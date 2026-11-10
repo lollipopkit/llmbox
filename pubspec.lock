@@ -486,9 +486,9 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: "0449e5e66d9631fb6ced8c4d080d51648327887b"
-      resolved-ref: "0449e5e66d9631fb6ced8c4d080d51648327887b"
-      url: "https://github.com/lppcg/fl_build.git"
+      ref: "94d69483c97089fed243e7b742614f32fc6b1b90"
+      resolved-ref: "94d69483c97089fed243e7b742614f32fc6b1b90"
+      url: "https://github.com/lollipopkit/fl_build.git"
     source: git
     version: "1.0.0"
   fl_lib:

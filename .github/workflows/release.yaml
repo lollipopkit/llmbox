@@ -105,7 +105,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ${{ env.APP_NAME }}_${{ env.BUILD_NUMBER }}_windows_amd64.zip
+            ${{ env.APP_NAME }}_${{ env.BUILD_NUMBER }}_windows_amd64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
