@@ -108,6 +108,8 @@ Future<void> _initAppComponents() async {
   if (LlmStores.tool.enabled.get()) unawaited(McpTools.connectStored());
 
   BakSync.instance.init();
+  // Signed in to LK Cloud, Conduit's models are offered.
+  ConduitProvider.attach(Lkc.client);
   // Off the launch path: it reads the keychain and asks homebase who is signed in.
   unawaited(Lkc.init());
   unawaited(LogSyncs.start());
