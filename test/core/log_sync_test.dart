@@ -64,10 +64,11 @@ void main() {
     await PrefStore.shared.init();
     FlutterSecureStorage.setMockInitialValues({'bakPwd': 'pw'});
     await FlRust.ensureInitialized(
+      // As the build hook left it, beside fl_pi_llm's (`nativeLib`).
       library: ExternalLibrary.open(switch (Platform.operatingSystem) {
-        'macos' => 'packages/fl_lib/rust/target/debug/libfl_lib_ffi.dylib',
-        'windows' => 'packages/fl_lib/rust/target/debug/fl_lib_ffi.dll',
-        _ => 'packages/fl_lib/rust/target/debug/libfl_lib_ffi.so',
+        'macos' => 'build/native_assets/macos/libfl_lib_ffi.dylib',
+        'windows' => 'build/native_assets/windows/fl_lib_ffi.dll',
+        _ => 'build/native_assets/linux/libfl_lib_ffi.so',
       }),
     );
     await device();
