@@ -27,6 +27,10 @@ class SettingStore extends SqliteStore {
     'rootfsManifestCacheSig',
   };
 
+  /// No sync stamps or carries them.
+  @override
+  bool isDeviceLocalKey(String key) => deviceLocalKeys.contains(key);
+
   late final themeMode = propertyDefault('themeMode', 0);
 
   late final themeColorSeed = propertyDefault('themeColorSeed', 4287106639);

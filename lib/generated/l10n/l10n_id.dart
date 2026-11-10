@@ -146,10 +146,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get providers => 'Penyedia';
 
   @override
-  String get keyInKeychain =>
-      'Disimpan di keychain sistem, tidak pernah di cadangan.';
-
-  @override
   String providersCountFmt(int n) {
     return '$n penyedia';
   }
@@ -323,4 +319,29 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get linuxNone => 'Belum terpasang';
+
+  @override
+  String get syncChats => 'Sinkronkan obrolan';
+
+  @override
+  String get syncAi => 'Sinkronkan model, alat, dan memori';
+
+  @override
+  String get syncSecrets => 'Sinkronkan kunci API dan rahasia MCP';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Kata sandi cadangan tidak membuka kunci sinkronisasi ini: perangkat lain mengubahnya';
+
+  @override
+  String get syncTooNew =>
+      'Disinkronkan dari versi lebih baru: perbarui untuk terus menyinkronkan';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud menolak sinkronisasi ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Ganti kunci sinkronisasi';
 }

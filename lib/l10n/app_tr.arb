@@ -41,7 +41,6 @@
   "startChatTip": "Aşağıdan bir model seçip bir şey yazın.",
   "noProviderKey": "Henüz hiçbir sağlayıcının anahtarı yok. Sohbete başlamak için bir tane ekleyin.",
   "providers": "Sağlayıcılar",
-  "keyInKeychain": "Sistem anahtar zincirinde saklanır, yedeklere asla girmez.",
   "providersCountFmt": "{n} sağlayıcı",
   "today": "Bugün",
   "earlier": "Daha önce",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "{distro} {version} indirilsin mi, {size} MB?",
   "linuxRemoveTip": "{name} ve içine kurulan her şey silinsin mi?",
   "linuxInUse": "İçinde bir komut çalışıyor",
-  "linuxNone": "Kurulu değil"
+  "linuxNone": "Kurulu değil",
+  "syncChats": "Sohbetleri eşitle",
+  "syncAi": "Modelleri, araçları ve belleği eşitle",
+  "syncSecrets": "API anahtarlarını ve MCP sırlarını eşitle",
+  "syncPasswordMismatch": "Yedek parolası bu eşitlemenin anahtarını açmıyor: başka bir cihaz değiştirdi",
+  "syncTooNew": "Daha yeni bir sürümden eşitlendi: eşitlemeye devam etmek için güncelleyin",
+  "syncRefused": "LK Cloud eşitlemeyi reddetti ({reason})",
+  "rotateSyncKey": "Eşitleme anahtarını değiştir"
 }

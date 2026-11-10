@@ -146,10 +146,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get providers => 'Провайдери';
 
   @override
-  String get keyInKeychain =>
-      'Зберігається в системній вʼязці ключів, ніколи не потрапляє в резервні копії.';
-
-  @override
   String providersCountFmt(int n) {
     return 'Провайдерів: $n';
   }
@@ -323,4 +319,29 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get linuxNone => 'Не встановлено';
+
+  @override
+  String get syncChats => 'Синхронізувати чати';
+
+  @override
+  String get syncAi => 'Синхронізувати моделі, інструменти й пам\'ять';
+
+  @override
+  String get syncSecrets => 'Синхронізувати API-ключі та секрети MCP';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Пароль резервної копії не відкриває ключ цієї синхронізації: інший пристрій змінив його';
+
+  @override
+  String get syncTooNew =>
+      'Синхронізовано з новішої версії: оновіть, щоб продовжити';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud відхилив синхронізацію ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Замінити ключ синхронізації';
 }

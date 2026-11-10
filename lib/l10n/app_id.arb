@@ -41,7 +41,6 @@
   "startChatTip": "Pilih model di bawah lalu tulis sesuatu.",
   "noProviderKey": "Belum ada penyedia yang memiliki kunci. Tambahkan satu untuk mulai mengobrol.",
   "providers": "Penyedia",
-  "keyInKeychain": "Disimpan di keychain sistem, tidak pernah di cadangan.",
   "providersCountFmt": "{n} penyedia",
   "today": "Hari ini",
   "earlier": "Sebelumnya",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "Unduh {distro} {version}, {size} MB?",
   "linuxRemoveTip": "Hapus {name} dan semua yang terpasang di dalamnya?",
   "linuxInUse": "Ada perintah yang sedang berjalan di dalamnya",
-  "linuxNone": "Belum terpasang"
+  "linuxNone": "Belum terpasang",
+  "syncChats": "Sinkronkan obrolan",
+  "syncAi": "Sinkronkan model, alat, dan memori",
+  "syncSecrets": "Sinkronkan kunci API dan rahasia MCP",
+  "syncPasswordMismatch": "Kata sandi cadangan tidak membuka kunci sinkronisasi ini: perangkat lain mengubahnya",
+  "syncTooNew": "Disinkronkan dari versi lebih baru: perbarui untuk terus menyinkronkan",
+  "syncRefused": "LK Cloud menolak sinkronisasi ({reason})",
+  "rotateSyncKey": "Ganti kunci sinkronisasi"
 }

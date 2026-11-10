@@ -41,7 +41,6 @@
   "startChatTip": "在下方选择模型，然后开始对话。",
   "noProviderKey": "还没有任何服务商配置了 key，添加一个即可开始对话。",
   "providers": "服务商",
-  "keyInKeychain": "保存在系统钥匙串中，不会进入备份。",
   "providersCountFmt": "{n} 个服务商",
   "today": "今天",
   "earlier": "更早",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "下载 {distro} {version}，{size} MB？",
   "linuxRemoveTip": "删除 {name} 及其中安装的所有内容？",
   "linuxInUse": "有命令正在其中运行",
-  "linuxNone": "未安装"
+  "linuxNone": "未安装",
+  "syncChats": "同步聊天",
+  "syncAi": "同步模型、工具和记忆",
+  "syncSecrets": "同步 API 密钥和 MCP 凭据",
+  "syncPasswordMismatch": "备份密码打不开此同步的密钥：另一台设备修改了密码",
+  "syncTooNew": "同步数据来自更新的版本：请更新以继续同步",
+  "syncRefused": "LK Cloud 拒绝了同步（{reason}）",
+  "rotateSyncKey": "更换同步密钥"
 }

@@ -41,7 +41,6 @@
   "startChatTip": "Elige un modelo abajo y escribe algo.",
   "noProviderKey": "Ningún proveedor tiene clave todavía. Añade una para empezar a chatear.",
   "providers": "Proveedores",
-  "keyInKeychain": "Guardada en el llavero del sistema, nunca en las copias de seguridad.",
   "providersCountFmt": "{n, plural, =1{1 proveedor} other{{n} proveedores}}",
   "today": "Hoy",
   "earlier": "Anteriores",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "¿Descargar {distro} {version}, {size} MB?",
   "linuxRemoveTip": "¿Eliminar {name} y todo lo instalado en él?",
   "linuxInUse": "Hay un comando ejecutándose en él",
-  "linuxNone": "No instalado"
+  "linuxNone": "No instalado",
+  "syncChats": "Sincronizar chats",
+  "syncAi": "Sincronizar modelos, herramientas y memoria",
+  "syncSecrets": "Sincronizar claves de API y secretos de MCP",
+  "syncPasswordMismatch": "La contraseña de copia no abre la clave de esta sincronización: otro dispositivo la cambió",
+  "syncTooNew": "Sincronizado desde una versión más nueva: actualiza para seguir sincronizando",
+  "syncRefused": "LK Cloud rechazó la sincronización ({reason})",
+  "rotateSyncKey": "Reemplazar la clave de sincronización"
 }

@@ -6,6 +6,7 @@ import 'package:llmbox/app.dart';
 import 'package:llmbox/core/lkc.dart';
 import 'package:llmbox/core/tool/shell.dart';
 import 'package:llmbox/core/tty.dart';
+import 'package:llmbox/core/util/log_sync.dart';
 import 'package:llmbox/core/util/sync.dart';
 import 'package:llmbox/data/res/build_data.dart';
 import 'package:llmbox/data/store/all.dart';
@@ -60,6 +61,14 @@ Future<void> _initData() async {
   await SecureStoreProps.migrateLegacyPrefs();
   await Webdav.initShared();
   await Stores.init();
+  // Before anything writes a synced store, so each edit is recorded. Without
+  // fl_lib's Rust the log sync is off, and the rest runs as before.
+  try {
+    await FlRust.ensureInitialized();
+  } catch (e, s) {
+    Loggers.app.warning('fl_lib Rust', e, s);
+  }
+  LogSyncs.install();
 }
 
 void _setupDebug() {
@@ -101,6 +110,7 @@ Future<void> _initAppComponents() async {
   BakSync.instance.init();
   // Off the launch path: it reads the keychain and asks homebase who is signed in.
   unawaited(Lkc.init());
+  unawaited(LogSyncs.start());
   // Only when sync is on, and never without a password: see BakSync.
   BakSync.instance.syncSoon();
 }

@@ -146,10 +146,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get providers => 'Anbieter';
 
   @override
-  String get keyInKeychain =>
-      'Im Schlüsselbund des Systems gespeichert, nie in Backups.';
-
-  @override
   String providersCountFmt(int n) {
     return '$n Anbieter';
   }
@@ -336,4 +332,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get linuxNone => 'Nicht installiert';
+
+  @override
+  String get syncChats => 'Chats synchronisieren';
+
+  @override
+  String get syncAi => 'Modelle, Werkzeuge und Gedächtnis synchronisieren';
+
+  @override
+  String get syncSecrets => 'API-Schlüssel und MCP-Geheimnisse synchronisieren';
+
+  @override
+  String get syncPasswordMismatch =>
+      'Das Backup-Passwort öffnet den Schlüssel dieser Synchronisierung nicht: ein anderes Gerät hat es geändert';
+
+  @override
+  String get syncTooNew =>
+      'Von einer neueren Version synchronisiert: aktualisieren, um weiter zu synchronisieren';
+
+  @override
+  String syncRefused(String reason) {
+    return 'LK Cloud hat die Synchronisierung abgelehnt ($reason)';
+  }
+
+  @override
+  String get rotateSyncKey => 'Sync-Schlüssel ersetzen';
 }

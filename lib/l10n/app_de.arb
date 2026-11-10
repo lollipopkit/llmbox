@@ -41,7 +41,6 @@
   "startChatTip": "Wähle unten ein Modell und schreib etwas.",
   "noProviderKey": "Noch kein Anbieter hat einen Schlüssel. Füge einen hinzu, um zu chatten.",
   "providers": "Anbieter",
-  "keyInKeychain": "Im Schlüsselbund des Systems gespeichert, nie in Backups.",
   "providersCountFmt": "{n} Anbieter",
   "today": "Heute",
   "earlier": "Früher",
@@ -90,5 +89,12 @@
   "linuxInstallTip": "{distro} {version} herunterladen, {size} MB?",
   "linuxRemoveTip": "{name} und alles darin Installierte löschen?",
   "linuxInUse": "Darin läuft ein Befehl",
-  "linuxNone": "Nicht installiert"
+  "linuxNone": "Nicht installiert",
+  "syncChats": "Chats synchronisieren",
+  "syncAi": "Modelle, Werkzeuge und Gedächtnis synchronisieren",
+  "syncSecrets": "API-Schlüssel und MCP-Geheimnisse synchronisieren",
+  "syncPasswordMismatch": "Das Backup-Passwort öffnet den Schlüssel dieser Synchronisierung nicht: ein anderes Gerät hat es geändert",
+  "syncTooNew": "Von einer neueren Version synchronisiert: aktualisieren, um weiter zu synchronisieren",
+  "syncRefused": "LK Cloud hat die Synchronisierung abgelehnt ({reason})",
+  "rotateSyncKey": "Sync-Schlüssel ersetzen"
 }

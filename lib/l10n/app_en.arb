@@ -41,7 +41,6 @@
   "startChatTip": "Pick a model below and say something.",
   "noProviderKey": "No provider has a key yet. Add one to start chatting.",
   "providers": "Providers",
-  "keyInKeychain": "Stored in the system keychain, never in backups.",
   "providersCountFmt": "{n, plural, =1{1 provider} other{{n} providers}}",
   "@providersCountFmt": {
     "placeholders": {
@@ -148,5 +147,19 @@
   "linuxRemoveTip": "Delete {name} and everything installed in it?",
   "@linuxRemoveTip": {"placeholders": {"name": {"type": "String"}}},
   "linuxInUse": "A command is running in it",
-  "linuxNone": "Not installed"
+  "linuxNone": "Not installed",
+  "syncChats": "Sync chats",
+  "syncAi": "Sync models, tools and memory",
+  "syncSecrets": "Sync API keys and MCP secrets",
+  "syncPasswordMismatch": "The backup password does not open this sync's key: another device changed it",
+  "syncTooNew": "Synced from a newer version: update to keep syncing",
+  "syncRefused": "LK Cloud refused the sync ({reason})",
+  "@syncRefused": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "rotateSyncKey": "Replace sync key"
 }
