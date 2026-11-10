@@ -64,9 +64,10 @@ android {
 
     // The release key: android/app/llmbox.p12 (EC P-384, PKCS12, one
     // password for store and key). Its password comes from the environment
-    // (ANDROID_KEYSTORE_PASSWORD, locally read from the keychain item
-    // "llmbox-android-keystore"), or from key.properties in CI; never from a
-    // file in the repository.
+    // (ANDROID_KEYSTORE_PASSWORD), read from 1Password, locally and in CI:
+    // op://CI/llmbox-android-keystore/password, the file beside it as
+    // `keystore`. key.properties is only for a build set up by hand; neither
+    // is ever in the repository.
     signingConfigs {
         release {
             def password = System.getenv('ANDROID_KEYSTORE_PASSWORD') ?: keystoreProperties['storePassword']

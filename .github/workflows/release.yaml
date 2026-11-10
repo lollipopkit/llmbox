@@ -33,17 +33,23 @@ jobs:
           ndk_version="$(tr -d '[:space:]' < android/ndk-version.txt)"
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$ndk_version" >/dev/null
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$ndk_version" >> "$GITHUB_ENV"
-      - name: Fetch secrets
-        # Through env, not interpolated into the script; -f fails on an HTTP error
-        # instead of saving the error page as the key.
+      # The release key and its password, from 1Password's vault CI: the
+      # service account reads that vault and nothing else.
+      - name: Install 1Password CLI
+        uses: 1password/install-cli-action@1a3160d5e9de1ae0803eaa08a88746f5ae3daa50 # v4.1.0
+        with:
+          version: 2.42.0
+      - name: Fetch the release key
         env:
-          BASIC_AUTH: ${{ secrets.BASIC_AUTH }}
-          URL_PREFIX: ${{ secrets.URL_PREFIX }}
-        run: |
-          curl -fsS -u "$BASIC_AUTH" -o android/app/llmbox.p12 "${URL_PREFIX}llmbox.p12"
-          curl -fsS -u "$BASIC_AUTH" -o android/key.properties "${URL_PREFIX}key.properties"
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        run: op read --out-file android/app/llmbox.p12 op://CI/llmbox-android-keystore/keystore
       - name: Build
-        run: dart run fl_build -p android
+        # `op run` puts the password in the build's environment only, and masks
+        # it in the log.
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          ANDROID_KEYSTORE_PASSWORD: op://CI/llmbox-android-keystore/password
+        run: op run -- dart run fl_build -p android
       - name: Check 16 KB page alignment
         env:
           READELF: ${{ env.ANDROID_NDK_HOME }}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf
