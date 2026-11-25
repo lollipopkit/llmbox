@@ -84,7 +84,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y clang cmake ninja-build pkg-config libgtk-3-dev mesa-utils libvulkan-dev desktop-file-utils wget
+          sudo apt install -y clang cmake ninja-build pkg-config libgtk-3-dev libx11-dev libxi-dev mesa-utils libvulkan-dev desktop-file-utils wget
           sudo apt install -y libsecret-1-dev
       - name: Build
         run: |
