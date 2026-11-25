@@ -7,7 +7,6 @@ import 'package:llmbox/data/res/l10n.dart';
 import 'package:llmbox/data/store/all.dart';
 import 'package:llmbox/generated/l10n/l10n.dart';
 import 'package:llmbox/view/page/home/home.dart';
-import 'package:icons_plus/icons_plus.dart';
 
 part 'intro.dart';
 

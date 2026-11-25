@@ -12,6 +12,9 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - 'packages/**'
+    # `flutter gen-l10n`'s output: its template still names flutter_localizations'
+    # deprecated delegates (flutter/flutter#191072).
+    - lib/generated/**
     - build/**
     - android/**
     - ios/**
