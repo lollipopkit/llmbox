@@ -4,8 +4,8 @@ publish_to: 'none'
 version: 1.0.419+419
 
 environment:
-  sdk: ">=3.13.0"
-  flutter: ">=3.47.0"
+  sdk: ">=3.14.0"
+  flutter: ">=3.50.0"
 
 dependencies:
   flutter:
@@ -14,15 +14,11 @@ dependencies:
     sdk: flutter
   intl: any
   app_links: ^7.0.0
-  icons_plus:
-    git:
-      url: https://github.com/lollipopkit/icons_plus
-      ref: main
   logging: ^1.3.0
   screenshot: ^3.0.0
   # Direct, though `SqliteStore` lives in fl_lib: `hooks.user_defines` below is
   # only honoured for this package's own dependencies.
-  sqlite3: ^3.6.0
+  sqlite3: ^3.9.0
   webdav_client_plus: ^3.0.0
   # A submodule, like fl_lib: developed alongside. Its ui package has the
   # chats, tools and provider settings, shared with Server Box.
@@ -33,19 +29,17 @@ dependencies:
   fl_lib:
     path: packages/fl_lib
   # The shell on this device, for the `shell` tool: processes on desktop, an
-  # Alpine userland under proot (Android) or ish-arm64 (iOS). Shared with
+  # Alpine userland under proot (Android) or iul (iOS). Shared with
   # Server Box; its hook builds its native code.
   fl_tty:
     path: packages/fl_tty
   animations: ^3.0.0
-  material_ui: ^1.5.0
+  material_ui: ^1.11.0
 
 dependency_overrides:
   # fl_pi_llm_ui asks for fl_lib from git; the submodule is the one.
   fl_lib:
     path: packages/fl_lib
-  # For flutter_markdown_plus_latex, in fl_pi_llm_ui: only the root can override.
-  flutter_math_fork: ^0.7.4
 
 dev_dependencies:
   flutter_test:

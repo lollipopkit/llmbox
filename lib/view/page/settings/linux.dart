@@ -1,6 +1,4 @@
-import 'dart:async';
-
-import 'package:dio/dio.dart' show CancelToken;
+import 'package:dio/dio.dart' show CancelToken, DioException;
 import 'package:fl_lib/fl_lib.dart';
 import 'package:fl_pi_llm_ui/fl_pi_llm_ui.dart';
 import 'package:fl_tty/fl_tty.dart';
@@ -66,7 +64,7 @@ class LinuxPage extends StatelessWidget {
     if (distros.isEmpty) return Toast.error(libL10n.notAvailable);
     final distro = distros.length == 1
         ? distros.first
-        : await context.showPickSingleDialog<LinuxDistro>(
+        : await context.showPickSingleSheet<LinuxDistro>(
             title: libL10n.install,
             items: distros,
             display: (d) => d.label,
@@ -74,7 +72,7 @@ class LinuxPage extends StatelessWidget {
     if (distro == null || !context.mounted) return;
     final target = Rootfs.target(picked: (distro: distro, release: distro.preferred));
     if (target == null) return Toast.error(libL10n.notAvailable);
-    final ok = await context.showRoundDialog<bool>(
+    final ok = await context.showSheet<bool>(
       title: libL10n.install,
       child: Text(l10n.linuxInstallTip(distro.label, target.release.version, target.release.source.sizeMb)),
       actions: Btnx.cancelOk,
@@ -84,10 +82,14 @@ class LinuxPage extends StatelessWidget {
     final progress = ValueNotifier<double?>(null);
     final cancel = CancelToken();
     var cancelled = false;
-    unawaited(
-      context.showRoundDialog(
-        title: libL10n.download,
-        child: DisposeWith(
+    var owned = false;
+    VoidCallback? closeProgress;
+    final progressSheet = context.showSheet<void>(
+      title: libL10n.download,
+      onShown: (c) => closeProgress = c,
+      childBuilder: (_) {
+        owned = true;
+        return DisposeWith(
           notifiers: [progress],
           child: ValueListenableBuilder(
             valueListenable: progress,
@@ -100,18 +102,18 @@ class LinuxPage extends StatelessWidget {
               ],
             ),
           ),
+        );
+      },
+      dismissible: false,
+      actions: [
+        Btn.text(
+          text: libL10n.cancel,
+          onTap: () {
+            cancelled = true;
+            cancel.cancel();
+          },
         ),
-        barrierDismiss: false,
-        actions: [
-          Btn.text(
-            text: libL10n.cancel,
-            onTap: () {
-              cancelled = true;
-              cancel.cancel();
-            },
-          ),
-        ],
-      ),
+      ],
     );
     try {
       await Rootfs.install(
@@ -120,17 +122,23 @@ class LinuxPage extends StatelessWidget {
         onProgress: (v) => progress.value = v,
         cancel: cancel,
       );
-      if (context.mounted) context.popDialog();
+      closeProgress?.call();
+      await progressSheet;
+      if (!owned) progress.dispose();
     } catch (e, s) {
+      closeProgress?.call();
+      await progressSheet;
+      if (!owned) progress.dispose();
       if (!context.mounted) return;
-      context.popDialog();
-      if (!cancelled) context.showErrDialog(e, s);
+      if (!(cancelled && e is DioException && CancelToken.isCancel(e))) {
+        context.showErrSheet(e, s);
+      }
     }
   }
 
   static Future<void> _remove(BuildContext context, LinuxProfile p) async {
     if (Rootfs.openSessions(p) > 0) return Toast.error(l10n.linuxInUse);
-    final ok = await context.showRoundDialog<bool>(
+    final ok = await context.showSheet<bool>(
       title: libL10n.delete,
       child: Text(l10n.linuxRemoveTip(p.label)),
       actions: Btnx.cancelRedOk,
@@ -139,7 +147,7 @@ class LinuxPage extends StatelessWidget {
     try {
       await Rootfs.removeProfile(p.id, expected: p);
     } catch (e, s) {
-      if (context.mounted) context.showErrDialog(e, s);
+      if (context.mounted) context.showErrSheet(e, s);
     }
   }
 }

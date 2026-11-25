@@ -31,18 +31,20 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.lollipopkit.llmbox"
-    compileSdk 36
+    namespace = "com.lollipopkit.llmbox"
+    compileSdk = 36
     // Also the NDK CI hands the native-asset hooks (ANDROID_NDK_HOME).
-    ndkVersion pinnedNdkVersion
+    ndkVersion = pinnedNdkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '1.8'
+    // Per module since AGP 9, which dropped the project-wide defaults.
+    // Needed for the per-build-type `app_name` resValue below.
+    buildFeatures {
+        resValues = true
     }
 
     sourceSets {
@@ -51,13 +53,13 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.lollipopkit.llmbox"
+        applicationId = "com.lollipopkit.llmbox"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
         // AppAuth's redirect receiver: `Lkc.redirectUrl`.
         manifestPlaceholders += [appAuthRedirectScheme: 'llmbox']
     }
@@ -89,9 +91,9 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            signingConfig = signingConfigs.release
+            minifyEnabled = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
 
         debug {
@@ -104,8 +106,14 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 flutter {
-    source '../..'
+    source = '../..'
 }
 
 dependencies {}

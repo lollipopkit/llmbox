@@ -9,7 +9,7 @@ final _screenshot = ScreenshotController();
 
 /// Shares the chat's current branch as an image or as markdown.
 Future<void> shareChat(BuildContext context, String chatId) async {
-  final type = await context.showPickSingleDialog(
+  final type = await context.showPickSingleSheet(
     title: l10n.share,
     items: const ['img', 'md'],
     display: (p0) => p0 == 'md' ? l10n.text : l10n.image,
@@ -46,7 +46,7 @@ Future<void> shareChat(BuildContext context, String chatId) async {
         ),
       ),
     );
-    final (pic, err) = await context.showLoadingDialog(
+    final (pic, err) = await context.showLoadingSheet(
       fn: () => _screenshot.captureFromLongWidget(
         widget,
         context: context,

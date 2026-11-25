@@ -205,7 +205,6 @@ Future<void> chatMenu(BuildContext context, ChatMeta m, {Offset? at}) {
     chatActions(context, m),
     title: m.title ?? l10n.untitled,
     at: at,
-    sheet: at == null && isMobile,
   );
 }
 
@@ -218,7 +217,7 @@ List<ContextMenuAction> chatActions(BuildContext context, ChatMeta m) => [
         destructive: true,
         onTap: () async {
           if (Stores.setting.confrimDel.get()) {
-            final ok = await context.showRoundDialog<bool>(
+            final ok = await context.showSheet<bool>(
               title: libL10n.delete,
               child: Text(l10n.delFmt(m.title ?? l10n.untitled, l10n.chat)),
               actions: Btnx.cancelRedOk,
@@ -232,12 +231,6 @@ List<ContextMenuAction> chatActions(BuildContext context, ChatMeta m) => [
     ];
 
 Future<void> _rename(BuildContext context, ChatMeta m) async {
-  final ctrl = TextEditingController(text: m.title);
-  final title = await context.showRoundDialog<String>(
-    title: l10n.rename,
-    child: Input(controller: ctrl, autoFocus: true, onSubmitted: (v) => context.pop(v)),
-    actions: [Btn.ok(onTap: () => context.pop(ctrl.text))],
-  );
-  ctrl.dispose();
+  final title = await context.showInputSheet(title: l10n.rename, initial: m.title);
   if (title != null && title.trim().isNotEmpty) Chats.rename(m.id, title.trim());
 }

@@ -294,7 +294,7 @@ final class AppSettingsPage extends StatelessWidget {
         title: libL10n.language,
         trailing: RowValue(val.isEmpty ? context.localeNativeName : (val.toLocale?.nativeName ?? val)),
         onTap: () async {
-          final result = await context.showPickSingleDialog<Locale>(
+          final result = await context.showPickSingleSheet<Locale>(
             title: libL10n.language,
             items: AppLocalizations.supportedLocales,
             display: (e) => e.nativeName,
@@ -318,14 +318,14 @@ final class AppSettingsPage extends StatelessWidget {
         trailing: Container(width: 24, height: 24, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
         onTap: () async {
           var picked = color;
-          await context.showRoundDialog(
+          await context.showSheet(
             title: libL10n.select,
-            child: ColorPicker(color: color, onColorChanged: (c) => picked = c),
-            actions: Btn.ok(
+            child: SingleChildScrollView(child: ColorPicker(color: color, onColorChanged: (c) => picked = c)),
+            actionsBuilder: (ctx) => Btn.ok(
               onTap: () {
                 _set.themeColorSeed.put(picked.value255);
                 RNodes.app.notify(delay: true);
-                context.pop();
+                ctx.popSheet();
               },
             ).toList,
           );
@@ -341,7 +341,7 @@ final class AppSettingsPage extends StatelessWidget {
         title: l10n.themeMode,
         trailing: RowValue(ThemeMode.values[val].i18n),
         onTap: () async {
-          final result = await context.showPickSingleDialog(
+          final result = await context.showPickSingleSheet(
             title: l10n.themeMode,
             items: ThemeMode.values,
             display: (e) => e.i18n,
@@ -381,7 +381,7 @@ final class AppSettingsPage extends StatelessWidget {
         trailing: RowValue(l10n.daysFmt(days)),
         onTap: () async {
           final ctrl = TextEditingController(text: '$days');
-          void save(String s) {
+          void save(BuildContext ctx, String s) {
             // At least a day: 0 would empty the trash at the next launch.
             final v = int.tryParse(s);
             if (v == null || v < 1) {
@@ -389,15 +389,23 @@ final class AppSettingsPage extends StatelessWidget {
               return;
             }
             _set.trashDays.put(v);
-            context.pop();
+            ctx.popSheet();
           }
 
-          await context.showRoundDialog(
+          await context.showSheet(
             title: l10n.emptyTrashAfter,
-            child: Input(controller: ctrl, type: TextInputType.number, autoFocus: true, onSubmitted: save, hint: l10n.emptyTrashTip),
-            actions: Btn.ok(onTap: () => save(ctrl.text)).toList,
+            childBuilder: (ctx) => DisposeWith(
+              notifiers: [ctrl],
+              child: Input(
+                controller: ctrl,
+                type: TextInputType.number,
+                autoFocus: true,
+                onSubmitted: (s) => save(ctx, s),
+                hint: l10n.emptyTrashTip,
+              ),
+            ),
+            actionsBuilder: (ctx) => Btn.ok(onTap: () => save(ctx, ctrl.text)).toList,
           );
-          ctrl.dispose();
         },
       );
     });
@@ -437,7 +445,7 @@ class TrashPage extends StatelessWidget {
                           icon: const Icon(Icons.delete_forever_outlined, size: 19),
                           text: libL10n.delete,
                           onTap: () async {
-                            final ok = await context.showRoundDialog<bool>(
+                            final ok = await context.showSheet<bool>(
                               title: libL10n.attention,
                               child: Text(l10n.delFmt(m.title ?? l10n.untitled, l10n.chat)),
                               actions: Btnx.okReds,

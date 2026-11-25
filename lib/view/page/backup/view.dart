@@ -210,7 +210,7 @@ final class _BackupPageState extends State<BackupPage> {
   }
 
   Future<void> _onRotateKey() async {
-    final ok = await context.showRoundDialog<bool>(
+    final ok = await context.showSheet<bool>(
       title: l10n.rotateSyncKey,
       child: Text(libL10n.askContinue(l10n.rotateSyncKey)),
       actions: Btnx.cancelRedOk,
@@ -265,14 +265,13 @@ final class _BackupPageState extends State<BackupPage> {
   }
 
   Future<bool> _setPassword() async {
-    final ctrl = TextEditingController(text: await BakSync.password);
+    final initial = await BakSync.password;
     if (!mounted) return false;
-    final v = await context.showRoundDialog<String>(
+    final v = await context.showInputSheet(
       title: l10n.backupPassword,
-      child: Input(controller: ctrl, obscureText: true, autoFocus: true, onSubmitted: (v) => context.pop(v)),
-      actions: [Btn.ok(onTap: () => context.pop(ctrl.text))],
+      initial: initial,
+      obscureText: true,
     );
-    ctrl.dispose();
     if (v == null) return false;
     if (v.isEmpty) {
       Toast.show(libL10n.empty);
@@ -295,7 +294,7 @@ final class _BackupPageState extends State<BackupPage> {
       Toast.show(l10n.backupPasswordRequired);
       return;
     }
-    final ok = await context.showRoundDialog<bool>(
+    final ok = await context.showSheet<bool>(
       title: libL10n.delete,
       child: Text(libL10n.askContinue('${libL10n.delete} ${l10n.backupPassword}')),
       actions: Btnx.cancelRedOk,
@@ -383,9 +382,9 @@ final class _BackupPageState extends State<BackupPage> {
     try {
       await fn();
     } catch (e, s) {
-      if (mounted) context.showErrDialog(e, s, what);
+      if (mounted) context.showErrSheet(e, s, what);
     } finally {
-      _webdavBusy.value = false;
+      if (mounted) _webdavBusy.value = false;
     }
   }
 
@@ -397,7 +396,7 @@ final class _BackupPageState extends State<BackupPage> {
       return;
     }
     if (!mounted) return;
-    final name = await context.showPickSingleDialog(title: libL10n.select, items: files..sort((a, b) => b.compareTo(a)));
+    final name = await context.showPickSingleSheet(title: libL10n.select, items: files..sort((a, b) => b.compareTo(a)));
     if (name == null) return;
     await Webdav.shared.download(relativePath: name);
     final text = await File(Paths.doc.joinPath(name)).readAsString();
@@ -416,30 +415,37 @@ final class _BackupPageState extends State<BackupPage> {
   }, 'WebDAV backup');
 
   Future<void> _webdavSettings() async {
+    final savedPwd = await SecureStoreProps.webdavPwd.read();
+    if (!mounted) return;
     final url = TextEditingController(text: PrefProps.webdavUrl.get());
     final user = TextEditingController(text: PrefProps.webdavUser.get());
-    final pwd = TextEditingController(text: await SecureStoreProps.webdavPwd.read());
-    if (!mounted) return;
-    final ok = await context.showRoundDialog<bool>(
+    final pwd = TextEditingController(text: savedPwd);
+    final res = await context.showSheet<(String, String, String)>(
       title: 'WebDAV',
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Input(label: 'URL', hint: 'https://example.com/webdav/', controller: url, autoFocus: true),
-          Input(label: l10n.user, controller: user),
-          Input(label: l10n.passwd, controller: pwd, obscureText: true),
-        ],
+      child: DisposeWith(
+        notifiers: [url, user, pwd],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Input(label: 'URL', hint: 'https://example.com/webdav/', controller: url, autoFocus: true),
+              Input(label: l10n.user, controller: user),
+              Input(label: l10n.passwd, controller: pwd, obscureText: true),
+            ],
+          ),
+        ),
       ),
-      actions: Btnx.oks,
+      actionsBuilder: (ctx) => [Btn.ok(onTap: () => ctx.popSheet((url.text, user.text, pwd.text)))],
     );
-    if (ok == true && mounted) {
-      final (_, err) = await context.showLoadingDialog(
+    if (res != null && mounted) {
+      final (nextUrl, nextUser, nextPwd) = res;
+      final (_, err) = await context.showLoadingSheet(
         fn: () async {
-          await Webdav.test(url.text, user.text, pwd.text);
-          Webdav.shared.client = WebdavClient.basicAuth(url: url.text, user: user.text, pwd: pwd.text);
-          PrefProps.webdavUrl.set(url.text);
-          PrefProps.webdavUser.set(user.text);
-          await SecureStoreProps.webdavPwd.write(pwd.text);
+          await Webdav.test(nextUrl, nextUser, nextPwd);
+          Webdav.shared.client = WebdavClient.basicAuth(url: nextUrl, user: nextUser, pwd: nextPwd);
+          PrefProps.webdavUrl.set(nextUrl);
+          PrefProps.webdavUser.set(nextUser);
+          await SecureStoreProps.webdavPwd.write(nextPwd);
           // Another server, or another account: nothing is known about it.
           BakSync.forgetCheckpoint();
         },
@@ -449,16 +455,13 @@ final class _BackupPageState extends State<BackupPage> {
         if (mounted) setState(() {});
       }
     }
-    url.dispose();
-    user.dispose();
-    pwd.dispose();
   }
 
   // --------------------------------------------------------------------------
   // By hand
 
   Future<void> _exportFile() async {
-    final (path, err) = await context.showLoadingDialog(fn: () async => Backup.toFile(password: await BakSync.password));
+    final (path, err) = await context.showLoadingSheet(fn: () async => Backup.toFile(password: await BakSync.password));
     if (err != null || path == null) return;
     await Pfs.sharePaths(paths: [path]);
   }
@@ -470,7 +473,7 @@ final class _BackupPageState extends State<BackupPage> {
   }
 
   Future<void> _copy() async {
-    final (text, err) = await context.showLoadingDialog(
+    final (text, err) = await context.showLoadingSheet(
       fn: () async => (await Backup.fromStores()).encode(password: await BakSync.password),
     );
     if (err != null || text == null) return;
@@ -497,39 +500,42 @@ Future<void> restoreFromText(BuildContext context, String text) async {
     if (!context.mounted) return;
     final encrypted = Backup.isEncrypted(text);
     if (encrypted && pwd == null) {
-      final ctrl = TextEditingController();
-      pwd = await context.showRoundDialog<String>(
+      pwd = await context.showInputSheet(
         title: l10n.backupPassword,
-        child: Input(controller: ctrl, obscureText: true, autoFocus: true, hint: l10n.backupEncryptedTip, onSubmitted: (v) => context.pop(v)),
-        actions: [Btn.ok(onTap: () => context.pop(ctrl.text))],
+        obscureText: true,
+        hint: l10n.backupEncryptedTip,
       );
-      ctrl.dispose();
       if (pwd == null || pwd.isEmpty) return;
     }
     if (!context.mounted) return;
     final p = pwd;
-    final (parsed, err) = await context.showLoadingDialog(fn: () => Backup.parse(text, password: p), onErr: (_, _) {});
+    StackTrace? trace;
+    final (parsed, err) = await context.showLoadingSheet(
+      fn: () => Backup.parse(text, password: p),
+      showErr: false,
+      onErr: (_, s) => trace = s,
+    );
     if (parsed != null) {
       bak = parsed;
     } else if (err is BackupTooNew) {
       Toast.show(l10n.backupTooNew);
       return;
-    } else if (encrypted) {
-      // Most likely the password: ask again.
+    } else if (err is WrongPasswordException || err is BackupPasswordNeeded) {
       Toast.show(l10n.passwordWrong);
       pwd = null;
     } else {
+      if (context.mounted) context.showErrSheet(err, trace);
       return;
     }
   }
   if (!context.mounted) return;
-  final ok = await context.showRoundDialog<bool>(
+  final ok = await context.showSheet<bool>(
     title: libL10n.restore,
     child: Text(l10n.sureRestoreFmt(bak.dateStr)),
     actions: Btnx.cancelOk,
   );
   if (ok != true || !context.mounted) return;
   final b = bak;
-  final (_, err) = await context.showLoadingDialog(fn: () => b.merge(force: true));
+  final (_, err) = await context.showLoadingSheet(fn: () => b.merge(force: true));
   if (err == null) Toast.success(libL10n.success);
 }
